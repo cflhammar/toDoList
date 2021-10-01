@@ -8,7 +8,11 @@ export interface IToDoItem {
 	handleRemove(id: number): void;
 }
 
-const ToDoList: React.FunctionComponent<string> = (title) => {
+interface ToDoListProps {
+	title: string;
+}
+
+const ToDoList: React.FunctionComponent<ToDoListProps> = ({ title }) => {
 	const [toDoItems, setToDoItems] = useState<IToDoItem[]>([]);
 
 	const handleAddToDoItem = (toDoText: string) => {
@@ -68,6 +72,7 @@ const ToDoList: React.FunctionComponent<string> = (title) => {
 				display: "inline-block",
 			}}
 		>
+			{title}
 			<Grid container spacing={1}>
 				<Grid item xs={9}>
 					<TextField
