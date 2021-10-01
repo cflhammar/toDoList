@@ -1,16 +1,31 @@
-import { ListItem, ListItemText } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
-
-import React from "react";
+import { Checkbox, IconButton, ListItem, ListItemText } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import React, { useState } from "react";
 import { IToDoItem } from "./ToDoList";
-import { CheckBox } from "@material-ui/icons";
 
 const ToDoListItem: React.FunctionComponent<IToDoItem> = (toDoItem) => {
+	const [checkedBox, setCheck] = useState(false);
+
+	const handleToggle = () => {
+		setCheck(!checkedBox);
+	};
+
 	return (
-		<ListItem>
-			<CheckBox />
-			<ListItemText primary={toDoItem.text + "," + toDoItem.id} />
-			<ClearIcon onClick={() => toDoItem.handleRemove(toDoItem.id)} />
+		<ListItem key={toDoItem.toDoId} divider>
+			<Checkbox onClick={() => handleToggle()} />
+
+			<ListItemText
+				primary={toDoItem.toDoText}
+				sx={{ textDecoration: checkedBox ? "line-through" : "none" }}
+			/>
+
+			<IconButton
+				edge="end"
+				aria-label="delete"
+				onClick={() => toDoItem.handleRemove(toDoItem.toDoId)}
+			>
+				<DeleteIcon />
+			</IconButton>
 		</ListItem>
 	);
 };

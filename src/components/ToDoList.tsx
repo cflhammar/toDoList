@@ -1,31 +1,36 @@
-import { Button, List, TextField } from "@mui/material";
+import { Button, Grid, List, Paper, TextField } from "@mui/material";
 import ToDoListItem from "./ToDoListItem";
 import React, { useState } from "react";
 
 export interface IToDoItem {
-	id: number;
-	text: string;
+	toDoId: number;
+	toDoText: string;
 	handleRemove(id: number): void;
 }
+
 const ToDoList: React.FunctionComponent = () => {
 	const [toDoItems, setToDoItems] = useState<IToDoItem[]>([]);
 
-	const handleAddToDoItem = (text: string) => {
+	const handleAddToDoItem = (toDoText: string) => {
 		if (inputText.length > 0) {
 			let nextId = 1;
 			if (toDoItems.length > 0) {
-				nextId = toDoItems[toDoItems.length - 1].id + 1;
+				nextId = toDoItems[toDoItems.length - 1].toDoId + 1;
 			}
 			setToDoItems((currentToDoItem) => [
 				...currentToDoItem,
-				{ id: nextId, text: text, handleRemove: handleRemoveItem },
+				{
+					toDoId: nextId,
+					toDoText: toDoText,
+					handleRemove: handleRemoveItem,
+				},
 			]);
 			setText("");
 		}
 	};
 
 	const handleRemoveItem = (id: number) => {
-		setToDoItems(toDoItems.filter((toDoItem) => toDoItem.id !== id));
+		setToDoItems(toDoItems.filter((toDoItem) => toDoItem.toDoId !== id));
 	};
 
 	const [inputText, setText] = useState("");
@@ -40,8 +45,9 @@ const ToDoList: React.FunctionComponent = () => {
 					{toDoItems.map((item) => {
 						return (
 							<ToDoListItem
-								text={item.text}
-								id={item.id}
+								key={item.toDoId}
+								toDoText={item.toDoText}
+								toDoId={item.toDoId}
 								handleRemove={handleRemoveItem}
 							/>
 						);
@@ -52,21 +58,42 @@ const ToDoList: React.FunctionComponent = () => {
 	};
 
 	return (
-		<div className="App">
-			<div className="input">
-				<TextField
-					value={inputText}
-					onChange={handleChange}
-					placeholder="Write to do thing"
-					label="Outlined secondary"
-					color="secondary"
-					focused
-				/>
-				<Button onClick={() => handleAddToDoItem(inputText)}>Save</Button>
-			</div>
+		<Paper
+			elevation={4}
+			className="toDoList"
+			sx={{
+				width: "50%",
+				margin: "100px",
+				padding: "10px",
+				display: "inline-block",
+			}}
+		>
+			<Grid container spacing={1}>
+				<Grid item xs={9}>
+					<TextField
+						value={inputText}
+						onChange={handleChange}
+						placeholder="Enter new task"
+						variant="filled"
+						margin="normal"
+						focused
+						sx={{ height: "100%", width: "100%" }}
+					/>
+				</Grid>
+				<Grid item xs={3}>
+					<Button
+						onClick={() => handleAddToDoItem(inputText)}
+						sx={{ height: "100%" }}
+					>
+						Save
+					</Button>
+				</Grid>
+			</Grid>
 
-			<div className="toDoList">{renderToDoList()}</div>
-		</div>
+			<Grid container spacing={1}>
+				{renderToDoList()}
+			</Grid>
+		</Paper>
 	);
 };
 
