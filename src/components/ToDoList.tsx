@@ -8,7 +8,7 @@ export interface IToDoItem {
 	handleRemove(id: number): void;
 }
 
-const ToDoList: React.FunctionComponent = () => {
+const ToDoList: React.FunctionComponent<string> = (title) => {
 	const [toDoItems, setToDoItems] = useState<IToDoItem[]>([]);
 
 	const handleAddToDoItem = (toDoText: string) => {
