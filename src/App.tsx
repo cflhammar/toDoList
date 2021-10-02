@@ -1,24 +1,50 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Grid, IconButton, TextField } from "@mui/material";
+
 import { useState } from "react";
 import "./App.css";
 import ToDoList from "./components/ToDoList";
 
-export interface IList {
+interface IList {
 	id: number;
+	title: string;
+	handleRemoveList(id: number): void;
 }
 
 const App: React.FunctionComponent = () => {
-	const [lists, setLists] = useState<IList[]>([{ id: 1 }, { id: 2 }]);
+	const handleRemoveList = (id: number) => {
+		setLists(lists.filter((list) => list.id !== id));
+	};
+	const [lists, setLists] = useState<IList[]>([
+		{ id: 1, title: "List1", handleRemoveList: handleRemoveList },
+		{ id: 2, title: "list 2", handleRemoveList: handleRemoveList },
+	]);
 
 	const handleAddList = () => {
-		setLists((currentLists) => [...currentLists, { id: 3 }]);
+		if (inputText.length > 0) {
+			const newList = {
+				id: 3,
+				title: inputText,
+				handleRemoveList: handleRemoveList,
+			};
+			setLists((currentLists) => [...currentLists, newList]);
+			setText("");
+		}
+	};
+
+	const [inputText, setText] = useState("");
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setText(event.target.value);
 	};
 
 	const renderLists = () => {
 		return lists.map((list) => {
 			return (
 				<Box>
-					<ToDoList title={list.id.toString()} />
+					<ToDoList
+						title={list.title}
+						id={list.id}
+						handleRemoveList={handleRemoveList}
+					/>
 				</Box>
 			);
 		});
@@ -26,7 +52,24 @@ const App: React.FunctionComponent = () => {
 
 	return (
 		<div>
-			<Button onClick={() => handleAddList()}>Add new list</Button>
+			<Grid className="container" container spacing={1}>
+				<Grid item xs={9}>
+					<TextField
+						value={inputText}
+						onChange={handleChange}
+						placeholder="Enter list name"
+						variant="filled"
+						margin="normal"
+						focused
+						sx={{ height: "100%", width: "100%" }}
+					/>
+				</Grid>
+				<Grid item xs={3}>
+					<Button onClick={() => handleAddList()} sx={{ height: "100%" }}>
+						Add
+					</Button>
+				</Grid>
+			</Grid>
 			{renderLists()}
 		</div>
 	);

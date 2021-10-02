@@ -1,4 +1,12 @@
-import { Button, Grid, List, Paper, TextField } from "@mui/material";
+import {
+	Button,
+	Grid,
+	IconButton,
+	List,
+	Paper,
+	TextField,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ToDoListItem from "./ToDoListItem";
 import React, { useState } from "react";
 
@@ -10,9 +18,15 @@ export interface IToDoItem {
 
 interface ToDoListProps {
 	title: string;
+	id: number;
+	handleRemoveList(id: number): void;
 }
 
-const ToDoList: React.FunctionComponent<ToDoListProps> = ({ title }) => {
+const ToDoList: React.FunctionComponent<ToDoListProps> = ({
+	title,
+	id,
+	handleRemoveList,
+}) => {
 	const [toDoItems, setToDoItems] = useState<IToDoItem[]>([]);
 
 	const handleAddToDoItem = (toDoText: string) => {
@@ -72,7 +86,20 @@ const ToDoList: React.FunctionComponent<ToDoListProps> = ({ title }) => {
 				display: "inline-block",
 			}}
 		>
-			{title}
+			<Grid container>
+				<Grid item xs={11}>
+					<h4>{title}</h4>
+				</Grid>
+				<Grid item xs={1}>
+					<IconButton
+						edge="end"
+						aria-label="delete"
+						onClick={() => handleRemoveList(id)}
+					>
+						<DeleteIcon />
+					</IconButton>
+				</Grid>
+			</Grid>
 			<Grid container spacing={1}>
 				<Grid item xs={9}>
 					<TextField
