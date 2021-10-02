@@ -4,6 +4,8 @@ import { useState } from "react";
 import "./App.css";
 import ToDoList from "./components/ToDoList";
 import AddList from "./components/AddList";
+import Masonry from "@mui/lab/Masonry";
+import MasonryItem from "@mui/lab/MasonryItem";
 
 interface IList {
 	id: number;
@@ -39,13 +41,13 @@ const App: React.FunctionComponent = () => {
 	const renderLists = () => {
 		return lists.map((list) => {
 			return (
-				<Box sx={{ width: "400px", textAlign: "center" }}>
+				<MasonryItem sx={{ width: "400px", textAlign: "center" }}>
 					<ToDoList
 						title={list.title}
 						id={list.id}
 						handleRemoveList={handleRemoveList}
 					/>
-				</Box>
+				</MasonryItem>
 			);
 		});
 	};
@@ -63,7 +65,13 @@ const App: React.FunctionComponent = () => {
 			>
 				<AddList handleAddList={handleAddList} />
 			</Paper>
-			<div className="to-do-lists-container">{renderLists()}</div>
+			<Masonry
+				columns={{ xs: 1, sm: 3, md: 4 }}
+				spacing={2}
+				className="to-do-lists-container"
+			>
+				{renderLists()}
+			</Masonry>
 		</div>
 	);
 };

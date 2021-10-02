@@ -1,4 +1,6 @@
 import { Grid, IconButton, List, Paper } from "@mui/material";
+import Masonry from "@mui/lab/Masonry";
+import MasonryItem from "@mui/lab/MasonryItem";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ToDoListItem from "./ToDoListItem";
 import React, { useState } from "react";
@@ -66,9 +68,8 @@ const ToDoList: React.FunctionComponent<ToDoListProps> = ({
 		}
 	};
 
-	return (
-		<Paper
-			elevation={4}
+	/*
+				elevation={4}
 			className="toDoList"
 			sx={{
 				backgroundColor: CSS_COLOR_NAMES[id],
@@ -77,30 +78,42 @@ const ToDoList: React.FunctionComponent<ToDoListProps> = ({
 				padding: "10px",
 				display: "inline-block",
 			}}
+			*/
+	return (
+		<Paper
+			elevation={4}
+			sx={{
+				backgroundColor: CSS_COLOR_NAMES[id],
+				margin: "5px",
+				display: "inline-block",
+				width: "100%",
+			}}
 		>
-			<Grid container>
-				<Grid item xs={11}>
-					<h1 className="list-title">{title}</h1>
+			<div>
+				<Grid sx={{ display: "inline-flex" }}>
+					<Grid item sx={{ width: "90%" }}>
+						<h1 className="list-title">{title}</h1>
+					</Grid>
+					<Grid item sx={{ width: "10%" }}>
+						<IconButton
+							edge="end"
+							aria-label="delete"
+							onClick={() => handleRemoveList(id)}
+						>
+							<DeleteIcon />
+						</IconButton>
+					</Grid>
 				</Grid>
-				<Grid item xs={1}>
-					<IconButton
-						edge="end"
-						aria-label="delete"
-						onClick={() => handleRemoveList(id)}
-					>
-						<DeleteIcon />
-					</IconButton>
+
+				<InputField
+					placeHolder="Enter task name..."
+					addFunction={handleAddToDoItem}
+				/>
+
+				<Grid container spacing={1}>
+					{renderToDoList()}
 				</Grid>
-			</Grid>
-
-			<InputField
-				placeHolder="Enter task name..."
-				addFunction={handleAddToDoItem}
-			/>
-
-			<Grid container spacing={1}>
-				{renderToDoList()}
-			</Grid>
+			</div>
 		</Paper>
 	);
 };
