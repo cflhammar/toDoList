@@ -1,21 +1,33 @@
 import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import "./App.css";
-import ToDoList, { IToDoItem } from "./components/ToDoList";
+import ToDoList from "./components/ToDoList";
+
+export interface IList {
+	id: number;
+}
 
 const App: React.FunctionComponent = () => {
-	const [lists, setLists] = useState([]);
+	const [lists, setLists] = useState<IList[]>([{ id: 1 }, { id: 2 }]);
+
+	const handleAddList = () => {
+		setLists((currentLists) => [...currentLists, { id: 3 }]);
+	};
+
+	const renderLists = () => {
+		return lists.map((list) => {
+			return (
+				<Box>
+					<ToDoList title={list.id.toString()} />
+				</Box>
+			);
+		});
+	};
 
 	return (
 		<div>
-			<Button>Add new list</Button>
-
-			<Box>
-				<ToDoList title={"Lista1"} />
-			</Box>
-			<Box>
-				<ToDoList title={"Lista2"} />
-			</Box>
+			<Button onClick={() => handleAddList()}>Add new list</Button>
+			{renderLists()}
 		</div>
 	);
 };
