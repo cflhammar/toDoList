@@ -1,11 +1,11 @@
 import { Checkbox, IconButton, ListItem, ListItemText } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useState } from "react";
-import { IToDoItem } from "../ToDoList/ToDoList";
+import { IToDoItem } from "./ToDoList";
 
 const ToDoListItem: React.FunctionComponent<IToDoItem> = ({
-	toDoId,
-	toDoText,
+	id,
+	text,
 	handleRemove,
 }) => {
 	const [checkedBox, setCheck] = useState(false);
@@ -15,18 +15,18 @@ const ToDoListItem: React.FunctionComponent<IToDoItem> = ({
 	};
 
 	return (
-		<ListItem key={toDoId} divider>
+		<ListItem key={id} divider>
 			<Checkbox onClick={() => handleToggle()} />
 
 			<ListItemText
-				primary={toDoText}
+				primary={text}
 				sx={{ textDecoration: checkedBox ? "line-through" : "none" }}
 			/>
 
 			<IconButton
 				edge="end"
 				aria-label="delete"
-				onClick={() => handleRemove(toDoId)}
+				onClick={() => handleRemove(id)}
 			>
 				<DeleteIcon />
 			</IconButton>

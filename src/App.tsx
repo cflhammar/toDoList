@@ -1,9 +1,9 @@
-import { Box, Button, Grid, IconButton, TextField } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 
 import { useState } from "react";
 import "./App.css";
-import ToDoList from "./components/ToDoList/ToDoList";
-import AddList from "./components/AddList/AddList";
+import ToDoList from "./components/ToDoList";
+import AddList from "./components/AddList";
 
 interface IList {
 	id: number;
@@ -12,35 +12,34 @@ interface IList {
 }
 
 const App: React.FunctionComponent = () => {
+	const [lists, setLists] = useState<IList[]>([]);
+
+	const handleAddList = (title: string) => {
+		let nextId = assignId();
+		const newList = {
+			id: nextId,
+			title: title,
+			handleRemoveList: handleRemoveList,
+		};
+		setLists((currentLists) => [...currentLists, newList]);
+	};
+
+	const assignId = (): number => {
+		let nextId = 1;
+		if (lists.length > 0) {
+			nextId = lists[lists.length - 1].id + 1;
+		}
+		return nextId;
+	};
+
 	const handleRemoveList = (id: number) => {
 		setLists(lists.filter((list) => list.id !== id));
-	};
-	const [lists, setLists] = useState<IList[]>([
-		{ id: 1, title: "List1", handleRemoveList: handleRemoveList },
-		{ id: 2, title: "list 2", handleRemoveList: handleRemoveList },
-	]);
-
-	const handleAddList = () => {
-		if (inputText.length > 0) {
-			const newList = {
-				id: 3,
-				title: inputText,
-				handleRemoveList: handleRemoveList,
-			};
-			setLists((currentLists) => [...currentLists, newList]);
-			setText("");
-		}
-	};
-
-	const [inputText, setText] = useState("");
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setText(event.target.value);
 	};
 
 	const renderLists = () => {
 		return lists.map((list) => {
 			return (
-				<Box sx={{ width: "500px", textAlign: "center" }}>
+				<Box sx={{ width: "400px", textAlign: "center" }}>
 					<ToDoList
 						title={list.title}
 						id={list.id}
@@ -53,25 +52,17 @@ const App: React.FunctionComponent = () => {
 
 	return (
 		<div>
-			<AddList />
-			<Grid className="container" container spacing={1}>
-				<Grid item xs={9}>
-					<TextField
-						value={inputText}
-						onChange={handleChange}
-						placeholder="Enter list name"
-						variant="filled"
-						margin="normal"
-						focused
-						sx={{ height: "100%", width: "100%" }}
-					/>
-				</Grid>
-				<Grid item xs={3}>
-					<Button onClick={() => handleAddList()} sx={{ height: "100%" }}>
-						Add
-					</Button>
-				</Grid>
-			</Grid>
+			<Paper
+				elevation={4}
+				className="header"
+				sx={{
+					border: "3px solid black",
+					backgroundColor: "rgba(50,200,100,0.2)",
+					marginTop: "10px",
+				}}
+			>
+				<AddList handleAddList={handleAddList} />
+			</Paper>
 			<div className="to-do-lists-container">{renderLists()}</div>
 		</div>
 	);
