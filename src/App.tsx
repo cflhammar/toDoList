@@ -2,7 +2,8 @@ import { Box, Button, Grid, IconButton, TextField } from "@mui/material";
 
 import { useState } from "react";
 import "./App.css";
-import ToDoList from "./components/ToDoList";
+import ToDoList from "./components/ToDoList/ToDoList";
+import AddList from "./components/AddList/AddList";
 
 interface IList {
 	id: number;
@@ -39,7 +40,7 @@ const App: React.FunctionComponent = () => {
 	const renderLists = () => {
 		return lists.map((list) => {
 			return (
-				<Box>
+				<Box sx={{ width: "500px", textAlign: "center" }}>
 					<ToDoList
 						title={list.title}
 						id={list.id}
@@ -52,6 +53,7 @@ const App: React.FunctionComponent = () => {
 
 	return (
 		<div>
+			<AddList />
 			<Grid className="container" container spacing={1}>
 				<Grid item xs={9}>
 					<TextField
@@ -70,7 +72,7 @@ const App: React.FunctionComponent = () => {
 					</Button>
 				</Grid>
 			</Grid>
-			{renderLists()}
+			<div className="to-do-lists-container">{renderLists()}</div>
 		</div>
 	);
 };

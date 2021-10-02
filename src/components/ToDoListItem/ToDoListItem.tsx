@@ -1,7 +1,7 @@
 import { Checkbox, IconButton, ListItem, ListItemText } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useState } from "react";
-import { IToDoItem } from "./ToDoList";
+import { IToDoItem } from "../ToDoList/ToDoList";
 
 const ToDoListItem: React.FunctionComponent<IToDoItem> = ({
 	toDoId,

@@ -7,8 +7,9 @@ import {
 	TextField,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ToDoListItem from "./ToDoListItem";
+import ToDoListItem from "../ToDoListItem/ToDoListItem";
 import React, { useState } from "react";
+import "./ToDoList.css";
 
 export interface IToDoItem {
 	toDoId: number;
@@ -80,15 +81,15 @@ const ToDoList: React.FunctionComponent<ToDoListProps> = ({
 			elevation={4}
 			className="toDoList"
 			sx={{
-				width: "50%",
-				margin: "100px",
+				width: "90%",
+				margin: "10px",
 				padding: "10px",
 				display: "inline-block",
 			}}
 		>
 			<Grid container>
 				<Grid item xs={11}>
-					<h4>{title}</h4>
+					<h1 className="list-title">{title}</h1>
 				</Grid>
 				<Grid item xs={1}>
 					<IconButton
@@ -100,6 +101,7 @@ const ToDoList: React.FunctionComponent<ToDoListProps> = ({
 					</IconButton>
 				</Grid>
 			</Grid>
+
 			<Grid container spacing={1}>
 				<Grid item xs={9}>
 					<TextField
